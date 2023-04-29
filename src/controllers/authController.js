@@ -34,7 +34,7 @@ var login = (req, res) => {
 
     //sign the token
     var token = jwt.sign({
-        id: user.id, email
+        email: email
     }, process.env.API_SECRET, {
         expiresIn: 86400 // expires in 24 hours
     });
