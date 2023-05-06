@@ -1,6 +1,5 @@
 const prefroutes = require('express').Router();
 const bodyparser = require('body-parser');
-const cors = require('cors');
 const verifyToken = require('../middleware/authJWT');
 const userinfo = require("../userinfo");
 
@@ -34,7 +33,17 @@ prefroutes.post('/', verifyToken, (req, res) => {
         });
       }
       const user = userinfo.find(u => u.email === req.user.email);
-      user.preferences = req.body.preferences;
+      // Check if the preferences key already exists
+    if (user.hasOwnProperty('preferences')) {
+        // If it exists, push the new fruit to the array
+        user.preferences.push(req.body.preferences);
+    } else {
+        // If it does not exist, create the key and assign it an empty array, then push the new preference(s) to the array
+        user.preferences = [];
+        user.preferences.push(req.body.preferences);
+    }
       res.status(200);
       res.send('preferences added successfully ${req.body.preferences}');
 });
+
+module.exports = prefroutes;

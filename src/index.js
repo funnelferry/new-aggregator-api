@@ -2,9 +2,9 @@ const express = require('express');
 const bodyparser = require('body-parser');
 const cors = require('cors');
 const routes = require('express').Router();
-const jsonwebtoken = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
 const { register, login} = require('./controllers/authController');
+const preferences = require('./routes/preferences');
+const news = require('./routes/news');
 
 const app = express();
 app.use(cors());
@@ -26,9 +26,9 @@ routes.post('/login', login);
 
 routes.post('/register', register);
 
-// routes.post('/news', news);
+routes.use('/preferences', preferences);
 
-// routes.post('/preferences', preferences);
+routes.use('/news', news);
 
 app.listen(process.env.PORT || PORT, (error) => {
     if(error){
